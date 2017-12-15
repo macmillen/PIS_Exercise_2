@@ -1,4 +1,3 @@
-<?import javafx.scene.layout.GridPane?>
 
 <!-- <Element fx:id row col -->
 
@@ -7,8 +6,7 @@
 <?import javafx.scene.layout.*?>
 
 
-
-<GridPane fx:controller="pis.hue2.client.ClientController"
+<GridPane fx:controller="pis.hue2.server.ServerController"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
 
     <padding>
@@ -16,10 +14,11 @@
     </padding>
 
 
-    <Button fx:id="startButton" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.valignment="TOP" text="Start"/>
+    <Button fx:id="startButton" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.valignment="TOP" text="Start"
+            onAction="#startServer"/>
     <Button fx:id="stopButton" GridPane.rowIndex="0" GridPane.columnIndex="1" text="Stop"/>
 
-    <TextArea fx:id="textArea" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="5"
+    <TextArea fx:id="textArea" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="4"
               GridPane.rowSpan="2" disable="true"/>
 
 </GridPane>
