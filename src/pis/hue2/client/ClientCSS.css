@@ -1,0 +1,12 @@
+.button {
+    -fx-max-width: Infinity;
+    -fx-max-height: Infinity;
+}
+
+#btnConnect {
+    -fx-background-color: lightgreen;
+}
+
+#btnDisconnect {
+    -fx-background-color: red;
+}

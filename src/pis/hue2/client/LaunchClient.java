@@ -1,29 +1,13 @@
 package pis.hue2.client;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
 import java.io.*;
 import java.net.*;
 
-public class LaunchClient extends Application {
+public class LaunchClient {
 
     private String name = "";
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("ClientGUI.fxml"));
-        primaryStage.setTitle("Client: " + name);
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
-    }
-
-    public static void main(String[] args) {
-
-        launch(args);
+    public static void connect() {
 
         String hostName = "localhost";
         int portNumber = 3141;
@@ -44,7 +28,7 @@ public class LaunchClient extends Application {
             System.exit(1);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-            System.exit(1);
+            // System.exit(1);
         }
     }
 

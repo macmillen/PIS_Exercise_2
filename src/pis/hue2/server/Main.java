@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    public static LaunchServer server = new LaunchServer();
+    public static Thread server = new Thread(new LaunchServer());
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -21,6 +21,5 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-
     }
 }

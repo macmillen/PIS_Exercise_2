@@ -1,10 +1,9 @@
 package pis.hue2.server;
 
-
 import java.net.*;
 import java.io.*;
 
-public class LaunchServer {
+public class LaunchServer implements Runnable {
 
     private int portNumber = 3141;
 
@@ -25,5 +24,11 @@ public class LaunchServer {
             System.out.println("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
             System.out.println(e.getMessage());
         }
+    }
+
+    @Override
+    public void run() {
+        while (true)
+            startServer();
     }
 }

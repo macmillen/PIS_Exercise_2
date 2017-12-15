@@ -9,7 +9,6 @@ public class ServerController {
 
     @FXML
     private void startServer() {
-        Main.server.startServer();
-        System.out.print("lel  ");
+        Main.server.start();
     }
 }
