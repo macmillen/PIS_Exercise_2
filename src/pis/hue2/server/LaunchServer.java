@@ -1,11 +1,27 @@
 package pis.hue2.server;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.net.*;
 import java.io.*;
 
-public class LaunchServer implements Runnable {
+public class LaunchServer extends Application {
 
-    public void run() {
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("ServerGUI.fxml"));
+        primaryStage.setTitle("Server");
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+
+        launch(args);
 
         int portNumber = 3141;
 

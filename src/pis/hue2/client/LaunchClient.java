@@ -1,17 +1,30 @@
 package pis.hue2.client;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import java.io.*;
 import java.net.*;
 
-public class LaunchClient implements Runnable {
+public class LaunchClient extends Application {
 
-    private String name;
+    private String name = "";
 
-    public LaunchClient(String name) {
-        this.name = name;
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getResource("ClientGUI.fxml"));
+        primaryStage.setTitle("Client: " + name);
+        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.show();
     }
 
-    public void run() {
+    public static void main(String[] args) {
+
+        launch(args);
+
         String hostName = "localhost";
         int portNumber = 3141;
 
@@ -24,7 +37,7 @@ public class LaunchClient implements Runnable {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
-                System.out.println(name + ": " + in.readLine());
+                System.out.println("name: " + in.readLine());
             }
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
@@ -33,5 +46,13 @@ public class LaunchClient implements Runnable {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
             System.exit(1);
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
