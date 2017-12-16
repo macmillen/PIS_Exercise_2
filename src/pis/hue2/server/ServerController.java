@@ -3,7 +3,6 @@ package pis.hue2.server;
 
 import javafx.fxml.FXML;
 
-import java.lang.reflect.InvocationTargetException;
 
 
 public class ServerController {
