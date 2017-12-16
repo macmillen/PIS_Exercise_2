@@ -37,7 +37,6 @@ public class LaunchServer implements Runnable {
 
     @Override
     public void run() {
-        while (true)
-            startServer();
+        startServer();
     }
 }

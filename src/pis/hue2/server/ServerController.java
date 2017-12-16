@@ -7,7 +7,6 @@ import pis.hue2.client.LaunchClient;
 
 public class ServerController {
 
-
     @FXML
     private void closeServer() {
         Main.server.interrupt();
