@@ -3,12 +3,11 @@ package pis.hue2.client;
 import java.io.*;
 import java.net.*;
 
-public class LaunchClient {
+public class LaunchClient implements Runnable {
 
     private String name = "";
 
-    public static void connect() {
-
+    public void connect() {
         String hostName = "localhost";
         int portNumber = 3141;
 
@@ -21,15 +20,18 @@ public class LaunchClient {
             String userInput;
             while ((userInput = stdIn.readLine()) != null) {
                 out.println(userInput);
-                System.out.println("name: " + in.readLine());
+                System.out.println(name + ": " + in.readLine());
             }
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
-            System.exit(1);
         } catch (IOException e) {
             System.err.println("Couldn't get I/O for the connection to " + hostName);
-            // System.exit(1);
         }
+    }
+
+    @Override
+    public void run() {
+        connect();
     }
 
     public String getName() {
