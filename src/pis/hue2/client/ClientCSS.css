@@ -1,4 +1,4 @@
-.button {
+.button, .scroll-pane {
     -fx-max-width: Infinity;
     -fx-max-height: Infinity;
 }
@@ -8,5 +8,5 @@
 }
 
 #btnDisconnect {
-    -fx-background-color: red;
+    -fx-background-color: #e74c3c;
 }

@@ -16,7 +16,12 @@ public class ClientController {
 
     @FXML
     private void connect() {
-        ClientMain.clientThread.start();
+        try {
+            ClientMain.clientThread.start();
+            System.out.println("Client connected");
+        } catch (IllegalThreadStateException e) {
+            System.out.println("Client already connected");
+        }
     }
 
     @FXML

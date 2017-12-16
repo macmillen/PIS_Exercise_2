@@ -5,16 +5,14 @@ import java.io.*;
 
 public class LaunchServer implements Runnable {
 
-    private int portNumber = 3141;
-
     private String inputMessage = "";
 
-    public void startServer() {
+    private void startServer() {
 
-
+        int portNumber = 3141;
         try (
                 ServerSocket serverSocket = new ServerSocket(portNumber);
-                Socket clientSocket = serverSocket.accept();
+                Socket clientSocket = serverSocket.accept(); // blockiert, bis sich ein Client angemeldet hat
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
         ) {
@@ -24,11 +22,11 @@ public class LaunchServer implements Runnable {
                 inputMessage = in.readLine();
             }
 
-
         } catch (IOException e) {
             System.out.println("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
             System.out.println(e.getMessage());
         }
+        System.out.println("done");
     }
 
     public String getInputMessage() {
@@ -38,5 +36,9 @@ public class LaunchServer implements Runnable {
     @Override
     public void run() {
         startServer();
+    }
+
+    public void sendMessage() {
+
     }
 }
