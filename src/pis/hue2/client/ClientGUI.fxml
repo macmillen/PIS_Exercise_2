@@ -41,6 +41,7 @@
             text="Connect"/>
     <Button fx:id="btnDisconnect"
             GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.rowSpan="1" GridPane.columnSpan="2"
+            onAction="#disconnect"
             text="Disconnect"/>
     <ScrollPane
             GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.rowSpan="2" GridPane.columnSpan="2">

@@ -10,12 +10,27 @@ public class LaunchClient implements Runnable {
     private Socket server;
     private Scanner in;
     private PrintWriter out;
+    private String newMessage = "";
 
-    public void connect() {
+    synchronized public void connect() {
         try {
             server = new Socket("localhost", 3141);
             in = new Scanner(server.getInputStream());
             out = new PrintWriter(server.getOutputStream(), true);
+
+            while (true) {
+                if (!newMessage.equals("")) {
+                    System.out.println("input confirmed");
+                    out.println(name + ": " + newMessage);
+                    System.out.println("slept");
+                    System.out.println(in.nextLine());
+                    newMessage = "";
+                }
+                if (Thread.currentThread().isInterrupted()) {
+                    System.out.println("Disconnected");
+                    return;
+                }
+            }
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -24,10 +39,7 @@ public class LaunchClient implements Runnable {
     }
 
     public void sendMessage(String message) {
-        connect();
-
-        out.println(name + ": " + message);
-        System.out.println(in.nextLine());
+        newMessage = message;
     }
 
     @Override

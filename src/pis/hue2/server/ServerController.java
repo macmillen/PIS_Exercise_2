@@ -12,6 +12,7 @@ public class ServerController {
     @FXML
     private void startServer() {
         try {
+            new Thread(new ClientDetector()).start();
             Main.server.start();
             System.out.println("Server started");
         } catch (IllegalThreadStateException e) {
