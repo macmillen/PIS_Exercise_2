@@ -12,18 +12,22 @@ public class LaunchClient implements Runnable {
     private PrintWriter out;
     private String newMessage = "";
 
-    synchronized public void connect() {
+    public void connect() {
         try {
             server = new Socket("localhost", 3141);
             in = new Scanner(server.getInputStream());
             out = new PrintWriter(server.getOutputStream(), true);
 
+            new Thread(new ClientInput(in)).start();
+
             while (true) {
+                try {
+                    Thread.sleep(0);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 if (!newMessage.equals("")) {
-                    System.out.println("input confirmed");
                     out.println(name + ": " + newMessage);
-                    System.out.println("slept");
-                    System.out.println(in.nextLine());
                     newMessage = "";
                 }
                 if (Thread.currentThread().isInterrupted()) {

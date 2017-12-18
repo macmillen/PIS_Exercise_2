@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ClientDetector implements Runnable {
 
-    public static List<Socket> clients = new ArrayList<>();
+    public static List<LaunchServer> clients = new ArrayList<>();
 
     @Override
     public void run() {
@@ -21,9 +21,14 @@ public class ClientDetector implements Runnable {
 
         while (true) {
             try {
-                clients.add(server.accept());
+                Thread.sleep(0);
+                LaunchServer client = new LaunchServer(server.accept());
+                clients.add(client);
+                new Thread(client).start();
                 System.out.println("Client added");
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }

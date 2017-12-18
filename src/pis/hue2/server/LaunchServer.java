@@ -6,19 +6,29 @@ import java.util.Scanner;
 
 public class LaunchServer implements Runnable {
 
-    private static void handleConnections() throws IOException {
+    private Socket client;
+
+    public LaunchServer(Socket client) {
+        this.client = client;
+    }
+
+    private void handleConnection() throws IOException {
         while (true) {
-            for (Socket client : ClientDetector.clients) {
-                System.out.println(client.toString());
-                Scanner in = new Scanner(client.getInputStream());
-                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(client.toString());
+            Scanner in = new Scanner(client.getInputStream());
 
-                String message = "";
-                System.out.println("slept");
-                if (in.hasNext())
-                    message = in.nextLine();
+            String message = "";
+            if (in.hasNext())
+                message = in.nextLine();
 
-                out.println("Server: " + message);
+            for (LaunchServer client : ClientDetector.clients) {
+                PrintWriter out = new PrintWriter(client.client.getOutputStream(), true);
+                out.println(message);
             }
         }
     }
@@ -26,7 +36,7 @@ public class LaunchServer implements Runnable {
     @Override
     public void run() {
         try {
-            handleConnections();
+            handleConnection();
         } catch (IOException e) {
             System.out.println("Connection failed");
         }
