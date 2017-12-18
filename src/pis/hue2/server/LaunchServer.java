@@ -2,43 +2,50 @@ package pis.hue2.server;
 
 import java.net.*;
 import java.io.*;
+import java.util.Scanner;
 
 public class LaunchServer implements Runnable {
 
-    private String inputMessage = "";
+    private void startServer() throws IOException {
+        ServerSocket server = new ServerSocket(3141);
 
-    private void startServer() {
+        while (true) {
+            Socket client = null;
 
-        int portNumber = 3141;
-        try (
-                ServerSocket serverSocket = new ServerSocket(portNumber);
-                Socket clientSocket = serverSocket.accept(); // blockiert, bis sich ein Client angemeldet hat
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))
-        ) {
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                out.println(inputLine);
-                inputMessage = in.readLine();
+            try {
+                client = server.accept();
+                handleConnection(client);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch (IOException e) {
-            System.out.println("Exception caught when trying to listen on port " + portNumber + " or listening for a connection");
-            System.out.println(e.getMessage());
+            /*
+            finally {
+                if (client != null) {
+                    try {
+                        client.close();
+                    } catch (IOException e) {
+                    }
+                }
+            }
+            */
         }
-        System.out.println("done");
     }
 
-    public String getInputMessage() {
-        return inputMessage;
+    private static void handleConnection(Socket client) throws IOException {
+        Scanner in = new Scanner(client.getInputStream());
+        PrintWriter out = new PrintWriter(client.getOutputStream(), true);
+
+        String message = in.nextLine();
+
+        out.println("Server: " + message);
     }
 
     @Override
     public void run() {
-        startServer();
-    }
-
-    public void sendMessage() {
-
+        try {
+            startServer();
+        } catch (IOException e) {
+            System.out.println("Connection failed");
+        }
     }
 }

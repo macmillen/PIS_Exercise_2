@@ -54,10 +54,13 @@
               GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.rowSpan="3" GridPane.columnSpan="4"
               editable="false"/>
     <TextField fx:id="chatInput"
-               GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.rowSpan="1" GridPane.columnSpan="3"/>
+               GridPane.rowIndex="5" GridPane.columnIndex="0" GridPane.rowSpan="1" GridPane.columnSpan="3"
+    />
     <Button fx:id="btnSend"
             GridPane.rowIndex="5" GridPane.columnIndex="3" GridPane.rowSpan="1" GridPane.columnSpan="1"
-            text="Send"/>
+            onAction="#sendMessage"
+            text="Send"
+            defaultButton="true"/>
 
     <stylesheets>
         <URL value="@ClientCSS.css"/>

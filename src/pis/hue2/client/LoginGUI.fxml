@@ -18,6 +18,6 @@
 
     <Label fx:id="labelLogin" text="Enter your name"/>
     <TextField fx:id="textFieldLogin"/>
-    <Button fx:id="btnLogin" onAction="#btnLogin" text="Confirm"/>
+    <Button fx:id="btnLogin" onAction="#btnLogin" text="Confirm" defaultButton="true"/>
 
 </VBox>

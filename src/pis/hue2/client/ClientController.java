@@ -1,5 +1,6 @@
 package pis.hue2.client;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -13,11 +14,13 @@ public class ClientController {
     private TextField textFieldLogin;
     @FXML
     private Button btnLogin;
+    @FXML
+    private TextField chatInput;
 
     @FXML
     private void connect() {
         try {
-            ClientMain.clientThread.start();
+            ClientMain.client.connect();
             System.out.println("Client connected");
         } catch (IllegalThreadStateException e) {
             System.out.println("Client already connected");
@@ -30,5 +33,11 @@ public class ClientController {
         Stage stage = (Stage) btnLogin.getScene().getWindow();
         ClientMain.primaryStage.setTitle("Client: " + ClientMain.client.getName());
         stage.close();
+    }
+
+    @FXML
+    private void sendMessage() {
+        ClientMain.client.sendMessage(chatInput.getText());
+        chatInput.setText("");
     }
 }
