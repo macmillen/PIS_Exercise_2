@@ -6,17 +6,15 @@ public class ServerController {
 
     @FXML
     private void closeServer() {
-        //Main.server.interrupt();
+        if (!ServerMain.serverThread.isInterrupted())
+            ServerMain.serverThread.interrupt();
     }
 
     @FXML
     private void startServer() {
-        try {
-            new Thread(new ClientDetector()).start();
+        if (!ServerMain.serverThread.isAlive()) {
+            ServerMain.serverThread.start();
             System.out.println("Server started");
-        } catch (IllegalThreadStateException e) {
-            System.out.println("Server already started");
-
-        }
+        } else System.out.println("Server already started");
     }
 }

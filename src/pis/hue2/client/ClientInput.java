@@ -6,12 +6,12 @@ public class ClientInput implements Runnable {
 
     private Scanner in;
 
-    public ClientInput(Scanner in) {
+    ClientInput(Scanner in) {
         this.in = in;
     }
 
     public void run() {
         while (in.hasNext())
-            System.out.println(in.nextLine());
+            ClientController.chatStatic.appendText(in.nextLine() + "\n");
     }
 }

@@ -6,12 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class ClientMain extends Application {
 
-    public static LaunchClient client = new LaunchClient();
-    public static Thread clientThread = new Thread(client);
-    public static Stage primaryStage;
+    static LaunchClient client = new LaunchClient();
+    static Thread clientThread = new Thread(client);
+    static Stage primaryStage;
 
     public static void main(String[] args) {
         launch(args);

@@ -6,7 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class ServerMain extends Application {
+
+    private static LaunchServer server = new LaunchServer();
+    static Thread serverThread = new Thread(server);
 
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -1,44 +1,33 @@
 package pis.hue2.server;
 
-import java.net.*;
-import java.io.*;
-import java.util.Scanner;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LaunchServer implements Runnable {
 
-    private Socket client;
-
-    public LaunchServer(Socket client) {
-        this.client = client;
-    }
-
-    private void handleConnection() throws IOException {
-        while (true) {
-            try {
-                Thread.sleep(0);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println(client.toString());
-            Scanner in = new Scanner(client.getInputStream());
-
-            String message = "";
-            if (in.hasNext())
-                message = in.nextLine();
-
-            for (LaunchServer client : ClientDetector.clients) {
-                PrintWriter out = new PrintWriter(client.client.getOutputStream(), true);
-                out.println(message);
-            }
-        }
-    }
+    static List<ServerInput> clients = new ArrayList<>();
 
     @Override
     public void run() {
+        ServerSocket server = null;
+
         try {
-            handleConnection();
+            server = new ServerSocket(3141);
         } catch (IOException e) {
-            System.out.println("Connection failed");
+            System.err.println("Failed to create ServerSocket");
+        }
+
+        while (true) {
+            try {
+                ServerInput client = new ServerInput(server.accept());
+                clients.add(client);
+                new Thread(client).start();
+                System.out.println("Client added");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
