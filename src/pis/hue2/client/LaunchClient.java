@@ -16,7 +16,12 @@ public class LaunchClient implements Runnable {
             Scanner in = new Scanner(server.getInputStream());
             PrintWriter out = new PrintWriter(server.getOutputStream(), true);
 
-            new Thread(new ClientInput(in)).start();
+            new Thread(() -> {
+                while (in.hasNext())
+                    ClientController.chatStatic.appendText(in.nextLine() + "\n");
+            }).start();
+
+            out.println(name + " entered the chatroom");
 
             while (true) {
                 if (!newMessage.equals("")) {
