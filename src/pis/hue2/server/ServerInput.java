@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class ServerInput implements Runnable {
 
     private Socket client;
+    private boolean interrupted;
 
     ServerInput(Socket client) {
         this.client = client;
@@ -22,9 +23,22 @@ public class ServerInput implements Runnable {
                 if (in.hasNext())
                     message = in.nextLine();
 
+                // broadcast
                 for (ServerInput client : LaunchServer.clients) {
-                    PrintWriter out = new PrintWriter(client.client.getOutputStream(), true);
-                    out.println(message);
+                    if (!message.equals("")) {
+                        PrintWriter out = new PrintWriter(client.client.getOutputStream(), true);
+                        out.println(message);
+                    }
+                }
+
+                if (message.equals("")) {
+                    interrupted = true;
+                    for (int i = 0; i < LaunchServer.clients.size(); ++i) {
+                        if (LaunchServer.clients.get(i).interrupted) {
+                            LaunchServer.clients.remove(i);
+                        }
+                    }
+                    return;
                 }
             } catch (IOException e) {
                 System.err.println("IO Stream issue");
