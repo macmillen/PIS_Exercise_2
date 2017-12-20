@@ -16,7 +16,16 @@ public class LaunchClient implements Runnable {
             Scanner in = new Scanner(server.getInputStream());
             PrintWriter out = new PrintWriter(server.getOutputStream(), true);
 
-            new Thread(new ClientInput(in)).start();
+            Thread inputThread = new Thread(() -> {
+                while (in.hasNext()) {
+                    if (Thread.currentThread().isInterrupted())
+                        return;
+                    ClientController.chatStatic.appendText(in.nextLine() + "\n");
+                }
+            });
+            inputThread.start();
+
+            out.println(name + " entered the chatroom");
 
             while (true) {
                 if (!newMessage.equals("")) {
@@ -24,7 +33,14 @@ public class LaunchClient implements Runnable {
                     newMessage = "";
                 }
                 if (Thread.currentThread().isInterrupted()) {
-                    System.out.println("Disconnected");
+                    inputThread.interrupt();
+                    out.println(name + " left the chat room");
+                    while (inputThread.isAlive()) {
+                    }
+                    System.out.println(inputThread.isAlive());
+                    out.close();
+                    in.close();
+                    server.close();
                     return;
                 }
             }

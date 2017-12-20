@@ -22,7 +22,9 @@ public class ClientController {
 
     @FXML
     private void connect() {
-        if (!ClientMain.clientThread.isAlive()) {
+        if (ClientMain.clientThread == null || !ClientMain.clientThread.isAlive()) {
+            ClientMain.clientThread = new Thread(ClientMain.client);
+
             ClientMain.clientThread.start();
             System.out.println("Client connected");
         } else
