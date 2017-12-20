@@ -1,10 +1,12 @@
 package pis.hue2.client;
 
+import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
 public class LaunchClient implements Runnable {
+
 
     private String name = "";
     private String newMessage = "";
@@ -20,16 +22,34 @@ public class LaunchClient implements Runnable {
                 while (in.hasNext()) {
                     if (Thread.currentThread().isInterrupted())
                         return;
-                    ClientController.chatStatic.appendText(in.nextLine() + "\n");
+
+
+                    String[] commandTemp = in.nextLine().split(":");
+                    String command = commandTemp[0];
+                    String nameSender = commandTemp[1];
+
+                    if (command.equals("refused"))
+                        ClientMain.clientThread.interrupt();
+
+
+                    else if (command.equals("message"))
+                        ClientController.chatStatic.appendText(nameSender + ": " + commandTemp[2] + "\n");
+
+                    else if (command.equals("namelist"))
+                        ClientController.updateNamelist(commandTemp);
+
+
+
+
                 }
             });
             inputThread.start();
 
-            out.println(name + " entered the chatroom");
+            out.println("connect:" + name);
 
             while (true) {
                 if (!newMessage.equals("")) {
-                    out.println(name + ": " + newMessage);
+                    out.println("message:" + newMessage);
                     newMessage = "";
                 }
                 if (Thread.currentThread().isInterrupted()) {

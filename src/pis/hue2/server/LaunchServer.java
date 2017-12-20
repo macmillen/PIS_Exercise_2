@@ -8,6 +8,7 @@ import java.util.List;
 public class LaunchServer implements Runnable {
 
     static List<ServerInput> clients = new ArrayList<>();
+    static ArrayList<String> clientNames = new ArrayList<>();
 
     @Override
     public void run() {

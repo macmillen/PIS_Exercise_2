@@ -47,14 +47,9 @@
             onAction="#disconnect"
             text="Disconnect"/>
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.rowSpan="2" GridPane.columnSpan="2">
-        <ListView>
+        <ListView fx:id="listView">
             <items>
-                <FXCollections fx:factory="observableArrayList">
-                    <String fx:value="One"/>
-                    <String fx:value="Two"/>
-                    <String fx:value="Three"/>
-                    <String fx:value="Four"/>
-                    <String fx:value="Five"/>
+                <FXCollections fx:factory="observableArrayList" fx:id="namesList">
                 </FXCollections>
             </items>
         </ListView>
