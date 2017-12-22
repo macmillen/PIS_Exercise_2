@@ -1,5 +1,7 @@
 package pis.hue2.client;
 
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,13 +12,14 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class ClientController {
 
     @FXML
     private ListView listView;
-    static ListView listViewStatic;
+    private ListProperty<String> listProperty = new SimpleListProperty<>();
 
     @FXML
     private TextField textFieldLogin;
@@ -29,16 +32,16 @@ public class ClientController {
     static TextArea chatStatic;
 
 
-    @FXML
-    static void updateNamelist(String[] namesList) {
+    void updateNamelist(String[] namesList) {
 
-        ObservableList<String> items = listViewStatic.getItems();
+        listView.itemsProperty().bind(listProperty);
 
-        items.clear();
+        ArrayList<String> newItems = new ArrayList<>();
 
         for (int i = 1; i < namesList.length; ++i) {
-            items.add(namesList[i]);
+            newItems.add(namesList[i]);
         }
+        listProperty.set(FXCollections.observableArrayList(newItems));
 
     }
 
@@ -52,7 +55,6 @@ public class ClientController {
         } else
             System.out.println("Client already connected");
         chatStatic = chat;
-        listViewStatic = listView;
     }
 
     @FXML

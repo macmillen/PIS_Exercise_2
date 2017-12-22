@@ -1,6 +1,7 @@
 package pis.hue2.client;
 
-import java.awt.*;
+import javafx.application.Platform;
+
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
@@ -31,16 +32,12 @@ public class LaunchClient implements Runnable {
                     if (command.equals("refused"))
                         ClientMain.clientThread.interrupt();
 
-
                     else if (command.equals("message"))
                         ClientController.chatStatic.appendText(nameSender + ": " + commandTemp[2] + "\n");
 
-                    else if (command.equals("namelist"))
-                        ClientController.updateNamelist(commandTemp);
-
-
-
-
+                    else if (command.equals("namelist")) {
+                        Platform.runLater(() -> ClientMain.clientController.updateNamelist(commandTemp));
+                    }
                 }
             });
             inputThread.start();
