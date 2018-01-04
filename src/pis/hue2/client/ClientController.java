@@ -3,22 +3,18 @@ package pis.hue2.client;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
 
 public class ClientController {
 
     @FXML
-    private ListView listView;
+    private ListView<String> listView;
     private ListProperty<String> listProperty = new SimpleListProperty<>();
 
     @FXML
@@ -27,9 +23,8 @@ public class ClientController {
     private Button btnLogin;
     @FXML
     private TextField chatInput;
-    @FXML
-    private TextArea chat;
-    static TextArea chatStatic;
+
+    public TextArea chat;
 
 
     void updateNamelist(String[] namesList) {
@@ -51,18 +46,14 @@ public class ClientController {
             ClientMain.clientThread = new Thread(ClientMain.client);
 
             ClientMain.clientThread.start();
-            System.out.println("Client connected");
         } else
             System.out.println("Client already connected");
-        chatStatic = chat;
     }
 
     @FXML
     private void disconnect() {
-        if (!ClientMain.clientThread.isInterrupted()) {
-            ClientMain.clientThread.interrupt();
-            System.out.println("Client disconnected");
-        }
+        PrintWriter out = ClientMain.client.getOutputStream();
+        out.println("disconnect:");
     }
 
     @FXML
@@ -77,5 +68,6 @@ public class ClientController {
     private void sendMessage() {
         ClientMain.client.sendMessage(chatInput.getText());
         chatInput.setText("");
+//        listView.setDisable(ClientMain.clientThread.isInterrupted());
     }
 }

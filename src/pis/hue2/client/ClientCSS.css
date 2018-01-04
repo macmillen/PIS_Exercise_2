@@ -1,12 +1,37 @@
-.button, .scroll-pane {
+.button, .list-view {
     -fx-max-width: Infinity;
-    -fx-max-height: Infinity;
 }
 
-#btnConnect {
-    -fx-background-color: lightgreen;
+.button {
+    -fx-background-color: lightseagreen;
+    -fx-text-fill: white;
 }
 
-#btnDisconnect {
-    -fx-background-color: #e74c3c;
+.root {
+    -fx-background-color: #6b6467;
+    -fx-background-image: url("chat_background.png");
+    -fx-background-position: right;
+    -fx-background-size: cover;
+}
+
+.button:disabled {
+    -fx-background-color: #727272;
+    -fx-text-fill: #b8b8b8;
+}
+
+#chat {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+#btnSend {
+    -fx-background-color: steelblue;
+}
+
+.button:hover {
+    -fx-background-color: #555555;
+}
+
+.text-area .scroll-pane, .text-area .scroll-pane .viewport, .text-area .scroll-pane .content {
+    -fx-background-color: transparent;
 }

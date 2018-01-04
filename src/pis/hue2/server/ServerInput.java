@@ -1,7 +1,5 @@
 package pis.hue2.server;
 
-import pis.hue2.client.LaunchClient;
-
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
@@ -19,84 +17,90 @@ public class ServerInput implements Runnable {
     @Override
     public void run() {
         while (true) {
-            System.out.println(client.toString());
+            Scanner in;
 
+            System.out.println(client.toString());
             System.out.println(LaunchServer.clients.size());
 
             try {
-                Scanner in = new Scanner(client.getInputStream());
+                in = new Scanner(client.getInputStream());
+
                 String input = "";
                 if (in.hasNext())
                     input = in.nextLine();
 
                 String[] commandTemp = input.split(":");
                 String command = commandTemp[0];
-                String message = commandTemp[1];
+                String message = "";
+                if (commandTemp.length > 1)
+                    message = commandTemp[1];
 
                 String output = "";
 
                 boolean nameExists = false;
 
+                PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 if (command.equals("connect")) {
-                    PrintWriter out = new PrintWriter(client.getOutputStream(), true);
 
                     for (int i = 0; i < LaunchServer.clientNames.size(); ++i)
                         if (LaunchServer.clientNames.get(i).equals(message))
                             nameExists = true;
 
-                    if (commandTemp.length > 2 || message.length() > 30)
+                    if (commandTemp.length > 2 || message.length() > 30) {
                         out.println("refused:invalid_name");
-
-                    else if (LaunchServer.clientNames.size() == 3) {
+                        interrupted = true;
+                    } else if (LaunchServer.clientNames.size() == 3) {
                         out.println("refused:too_many_users");
-                        LaunchServer.clients.remove(LaunchServer.clients.size() - 1);
-                    } else if (nameExists)
+                        interrupted = true;
+                    } else if (nameExists) {
                         out.println("refused:name_in_use");
-
-                    else {
+                        interrupted = true;
+                    } else {
                         name = message;
                         out.println("connect:ok");
                         LaunchServer.clientNames.add(message);
-                        output = "namelist";
-
-                        for (int i = 0; i < LaunchServer.clientNames.size(); ++i) {
-                            output += ":" + LaunchServer.clientNames.get(i);
-                        }
+                        output = updateNameList();
                     }
 
                 } else if (command.equals("message"))
                     output = "message:" + name + ":" + message;
 
-                else if (command.equals("disconnect"))
-                    output = "disconnect:ok";
-
-                else
-                    output = "disconnect:invalid_command";
+                else if (command.equals("disconnect")) {
+                    out.println("disconnect:ok");
+                    LaunchServer.clientNames.remove(name);
+                    output = updateNameList();
+                    interrupted = true;
+                } else {
+                    out.println("disconnect:invalid_command");
+                    LaunchServer.clientNames.remove(name);
+                    output = updateNameList();
+                    interrupted = true;
+                }
 
                 // broadcast
                 for (ServerInput client : LaunchServer.clients) {
                     if (!input.equals("")) {
-                        PrintWriter out = new PrintWriter(client.client.getOutputStream(), true);
-                        out.println(output);
+                        PrintWriter outB = new PrintWriter(client.client.getOutputStream(), true);
+                        outB.println(output);
                     }
                 }
-
-                if (input.equals("")) {
-                    interrupted = true;
-                    for (int i = 0; i < LaunchServer.clients.size(); ++i) {
-                        if (LaunchServer.clients.get(i).interrupted) {
-                            LaunchServer.clients.remove(i);
-                        }
-                    }
+                if (interrupted) {
+                    LaunchServer.clients.remove(this);
+                    in.close();
                     return;
                 }
             } catch (IOException e) {
                 System.err.println("IO Stream issue");
             }
-            if (ServerMain.serverThread.isInterrupted()) {
-                System.out.println("ServerInput closed");
-                return;
-            }
         }
+    }
+
+    private String updateNameList() {
+        String output = "namelist";
+
+        for (int i = 0; i < LaunchServer.clientNames.size(); ++i) {
+            output += ":" + LaunchServer.clientNames.get(i);
+        }
+        return output;
     }
 }

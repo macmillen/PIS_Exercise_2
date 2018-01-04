@@ -1,6 +1,7 @@
 package pis.hue2.client;
 
 import javafx.application.Platform;
+import pis.hue2.common.Misc;
 
 import java.io.*;
 import java.net.*;
@@ -11,33 +12,49 @@ public class LaunchClient implements Runnable {
 
     private String name = "";
     private String newMessage = "";
+    private PrintWriter out;
 
     @Override
     public void run() {
         try {
             Socket server = new Socket("localhost", 3141);
             Scanner in = new Scanner(server.getInputStream());
-            PrintWriter out = new PrintWriter(server.getOutputStream(), true);
+            out = new PrintWriter(server.getOutputStream(), true);
 
             Thread inputThread = new Thread(() -> {
                 while (in.hasNext()) {
-                    if (Thread.currentThread().isInterrupted())
-                        return;
-
-
-                    String[] commandTemp = in.nextLine().split(":");
+                    String in_ = in.nextLine();
+                    String[] commandTemp = in_.split(":");
                     String command = commandTemp[0];
-                    String nameSender = commandTemp[1];
+                    String displayText = "";
 
-                    if (command.equals("refused"))
+                    if (command.equals("connect"))
+                        displayText = "Successfully connected";
+                    if (command.equals("refused")) {
                         ClientMain.clientThread.interrupt();
+                        if (commandTemp[1].equals("too_many_users"))
+                            displayText = "Refused: too many users";
+                        if (commandTemp[1].equals("name_in_use"))
+                            displayText = "Refused: name in use";
+                        if (commandTemp[1].equals("invalid_name"))
+                            displayText = "Refused: invalid name";
+                    } else if (command.equals("message"))
+                        displayText = commandTemp[1] + ": " + commandTemp[2];
 
-                    else if (command.equals("message"))
-                        ClientController.chatStatic.appendText(nameSender + ": " + commandTemp[2] + "\n");
-
-                    else if (command.equals("namelist")) {
+                    else if (command.equals("namelist"))
                         Platform.runLater(() -> ClientMain.clientController.updateNamelist(commandTemp));
+
+                    else if (command.equals("disconnect")) {
+                        if (commandTemp[1].equals("ok"))
+                            displayText = "Disconnected: ok";
+                        if (commandTemp[1].equals("invalid_command"))
+                            displayText = "Disconnected: Invalid command";
+                        ClientMain.clientThread.interrupt();
                     }
+                    if (!displayText.equals(""))
+                        ClientMain.clientController.chat.appendText(Misc.getTime() + " " + displayText + "\n");
+                    if (ClientMain.clientThread.isInterrupted())
+                        return;
                 }
             });
             inputThread.start();
@@ -50,11 +67,6 @@ public class LaunchClient implements Runnable {
                     newMessage = "";
                 }
                 if (Thread.currentThread().isInterrupted()) {
-                    inputThread.interrupt();
-                    out.println(name + " left the chat room");
-                    while (inputThread.isAlive()) {
-                    }
-                    System.out.println(inputThread.isAlive());
                     out.close();
                     in.close();
                     server.close();
@@ -64,7 +76,7 @@ public class LaunchClient implements Runnable {
         } catch (UnknownHostException e) {
             System.err.println("Unknown Host");
         } catch (IOException e) {
-            System.err.println("IO issues");
+            ClientMain.clientController.chat.appendText(Misc.getTime() + " Server offline" + "\n");
         }
     }
 
@@ -78,5 +90,9 @@ public class LaunchClient implements Runnable {
 
     void setName(String name) {
         this.name = name;
+    }
+
+    PrintWriter getOutputStream() {
+        return out;
     }
 }

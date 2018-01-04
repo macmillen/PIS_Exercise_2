@@ -19,6 +19,6 @@
     <Button fx:id="stopButton" GridPane.rowIndex="0" GridPane.columnIndex="1" text="Stop" onAction="#closeServer"/>
 
     <TextArea fx:id="textArea" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="4"
-              GridPane.rowSpan="2" disable="true"/>
+              GridPane.rowSpan="2" editable="false"/>
 
 </GridPane>
