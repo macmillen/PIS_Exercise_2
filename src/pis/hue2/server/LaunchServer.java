@@ -1,7 +1,10 @@
 package pis.hue2.server;
 
+import pis.hue2.common.Misc;
+
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,9 +19,24 @@ public class LaunchServer implements Runnable {
 
         try {
             server = new ServerSocket(3141);
+
         } catch (IOException e) {
             System.err.println("Failed to create ServerSocket");
         }
+
+        ServerSocket finalServer = server;
+        new Thread(() -> {
+            while (true) {
+                if (ServerMain.serverThread.isInterrupted()) {
+                    try {
+                        finalServer.close();
+                        return;
+                    } catch (IOException e) {
+                        System.err.println("Failed to close server");
+                    }
+                }
+            }
+        }).start();
 
         while (true) {
             try {
@@ -27,7 +45,8 @@ public class LaunchServer implements Runnable {
                 new Thread(client).start();
                 System.out.println("Client added");
             } catch (IOException e) {
-                e.printStackTrace();
+                ServerMain.serverController.textArea.appendText(Misc.getTime() + " " + "Server closed\n");
+                return;
             }
         }
     }

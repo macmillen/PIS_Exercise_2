@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 public class LaunchClient implements Runnable {
 
-
     private String name = "";
     private String newMessage = "";
     private PrintWriter out;
