@@ -34,6 +34,8 @@ public class ServerController {
     private void closeServer() {
         if (!ServerMain.serverThread.isInterrupted()) {
             ServerMain.serverThread.interrupt();
+            for (ServerInput serverInput : LaunchServer.clients)
+                serverInput.setInterrupted(true);
         }
     }
 

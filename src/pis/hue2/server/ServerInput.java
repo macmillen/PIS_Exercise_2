@@ -1,7 +1,6 @@
 package pis.hue2.server;
 
 import javafx.application.Platform;
-import pis.hue2.client.ClientMain;
 import pis.hue2.common.Misc;
 
 import java.net.*;
@@ -46,7 +45,6 @@ public class ServerInput implements Runnable {
 
                 PrintWriter out = new PrintWriter(client.getOutputStream(), true);
                 if (command.equals("connect")) {
-
                     for (int i = 0; i < LaunchServer.clientNames.size(); ++i)
                         if (LaunchServer.clientNames.get(i).equals(message))
                             nameExists = true;
@@ -72,15 +70,11 @@ public class ServerInput implements Runnable {
                 } else if (command.equals("message"))
                     output = "message:" + name + ":" + message;
 
-                else if (command.equals("disconnect")) {
-                    out.println("disconnect:ok");
-                    LaunchServer.clientNames.remove(name);
-                    output = updateNameList();
-                    String finalOutput = output;
-                    Platform.runLater(() -> ServerMain.serverController.updateNamelist(finalOutput.split(":")));
-                    interrupted = true;
-                } else {
-                    out.println("disconnect:invalid_command");
+                else {
+                    if (command.equals("disconnect"))
+                        out.println("disconnect:ok");
+                    else
+                        out.println("disconnect:invalid_command");
                     LaunchServer.clientNames.remove(name);
                     output = updateNameList();
                     String finalOutput = output;
@@ -113,5 +107,9 @@ public class ServerInput implements Runnable {
             output += ":" + LaunchServer.clientNames.get(i);
         }
         return output;
+    }
+
+    void setInterrupted(boolean interrupted) {
+        this.interrupted = interrupted;
     }
 }
