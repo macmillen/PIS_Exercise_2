@@ -31,7 +31,7 @@ public class ClientController {
 
 
     /**
-     * Methode zum aktualisieren der Namensliste
+     * Methode zum Aktualisieren der Namensliste
      *
      * @param namesList String Array, welche die Namen der Clients beinhaltet
      */
@@ -84,7 +84,7 @@ public class ClientController {
     }
 
     /**
-     * Methode des Buttons, zum senden von Nachrichten
+     * Methode des Buttons, zum Senden von Nachrichten
      */
     @FXML
     private void sendMessage() {

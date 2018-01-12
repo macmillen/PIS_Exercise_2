@@ -18,7 +18,7 @@ public class ServerMain extends Application {
     /**
      * Diese Methode wird beim starten der GUI ausgeführt
      *
-     * @param primaryStage
+     * @param primaryStage Hauptfenster der GUI
      * @throws Exception
      */
     @Override

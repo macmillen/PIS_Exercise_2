@@ -1,13 +1,9 @@
 <component name="ArtifactManager">
-  <artifact type="javafx" name="JavaFXApp">
+  <artifact type="jar" name="JavaFXApp">
     <output-path>$PROJECT_DIR$/out/artifacts/JavaFXApp</output-path>
-    <properties id="javafx-properties">
-      <options>
-        <option name="appClass" value="sample.Main" />
-      </options>
-    </properties>
-    <root id="root">
-      <element id="archive" name="JavaFXApp.jar">
+    <root id="archive" name="JavaFXApp.jar">
+      <element id="dir-copy" path="$PROJECT_DIR$" />
+      <element id="directory" name="out">
         <element id="module-output" name="PIS_Exercise_2" />
       </element>
     </root>

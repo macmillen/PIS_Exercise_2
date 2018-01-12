@@ -24,7 +24,7 @@ public class ClientMain extends Application {
     /**
      * Diese Methode startet die GUI, zusätzlich wird ein pop-up Fenster gestartet, indem der Benutzer sein Nutzername eingeben muss
      *
-     * @param primaryStage
+     * @param primaryStage Hauptfenster der GUI
      * @throws Exception
      */
     @Override

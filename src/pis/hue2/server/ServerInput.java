@@ -16,8 +16,15 @@ public class ServerInput implements Runnable {
     private String name;
     private boolean interrupted;
 
+    /**
+     * Invariante: client darf nicht null sein
+     *
+     * @param client Socket des Clients
+     */
+
     ServerInput(Socket client) {
-        this.client = client;
+        if (client != null)
+            this.client = client;
     }
 
     /**
