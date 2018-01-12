@@ -8,11 +8,18 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Diese Klasse startet den Server und fügt Clients hinzu
+ */
 public class LaunchServer implements Runnable {
+
 
     static List<ServerInput> clients = new ArrayList<>();
     static ArrayList<String> clientNames = new ArrayList<>();
 
+    /**
+     * Diese Methode startet den Server und wartet stetig darauf, dass sich neue Clients verbinden.
+     */
     @Override
     public void run() {
         ServerSocket server = null;

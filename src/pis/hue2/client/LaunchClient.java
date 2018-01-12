@@ -7,12 +7,18 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
+/**
+ * Klasse, welche den Client startet, sowie Input des Servers und das Senden von Nachrichten an den Server verwaltet
+ */
 public class LaunchClient implements Runnable {
 
     private String name = "";
     private String newMessage = "";
     private PrintWriter out;
 
+    /**
+     * Diese Methode startet/schließt den Client. Außerdem prüft sie Nachrichten, welche vom Server kommen auf bestimme Kommandos und verarbeitet die Nachricht daraufhin weiter.
+     */
     @Override
     public void run() {
         try {

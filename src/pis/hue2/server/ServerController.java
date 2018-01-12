@@ -10,6 +10,9 @@ import pis.hue2.common.Misc;
 
 import java.util.ArrayList;
 
+/**
+ * Controller Klasse des Servers, welche die funktionalität der Buttons beinhaltet und die Namensliste aktualisiert.
+ */
 public class ServerController {
 
     public TextArea textArea;
@@ -18,6 +21,11 @@ public class ServerController {
     private ListView<String> listView;
     private ListProperty<String> listProperty = new SimpleListProperty<>();
 
+    /**
+     * Diese Methode aktualisiert die Namen innerhalb des Fensters der Server GUI
+     *
+     * @param namesList String Array, welche die Namen der Clients beinhaltet
+     */
     void updateNamelist(String[] namesList) {
 
         listView.itemsProperty().bind(listProperty);
@@ -30,6 +38,10 @@ public class ServerController {
         listProperty.set(FXCollections.observableArrayList(newItems));
     }
 
+    /**
+     *Methode zum schließen des Servers
+     *
+     */
     @FXML
     private void closeServer() {
         if (!ServerMain.serverThread.isInterrupted()) {
@@ -39,6 +51,9 @@ public class ServerController {
         }
     }
 
+    /**
+     * Methode zum starten des Servers
+     */
     @FXML
     private void startServer() {
         if (ServerMain.serverThread == null || !ServerMain.serverThread.isAlive()) {

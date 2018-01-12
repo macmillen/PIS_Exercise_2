@@ -7,6 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Main Klasse des Servers, welche die GUI startet
+ */
 public class ClientMain extends Application {
 
     static LaunchClient client = new LaunchClient();
@@ -18,6 +21,12 @@ public class ClientMain extends Application {
         launch(args);
     }
 
+    /**
+     * Diese Methode startet die GUI, zusätzlich wird ein pop-up Fenster gestartet, indem der Benutzer sein Nutzername eingeben muss
+     *
+     * @param primaryStage
+     * @throws Exception
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ClientGUI.fxml"));

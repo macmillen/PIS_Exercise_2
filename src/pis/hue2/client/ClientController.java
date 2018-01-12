@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+/**
+ * Controller Klasse der Clients. Diese Klasse beinhaltet die funktionalität der Buttons. Außerdem werden verschiedene Anzeigen aktualisiert
+ */
 public class ClientController {
 
     @FXML
@@ -27,6 +30,11 @@ public class ClientController {
     public TextArea chat;
 
 
+    /**
+     * Methode zum aktualisieren der Namensliste
+     *
+     * @param namesList String Array, welche die Namen der Clients beinhaltet
+     */
     void updateNamelist(String[] namesList) {
 
         listView.itemsProperty().bind(listProperty);
@@ -40,6 +48,9 @@ public class ClientController {
 
     }
 
+    /**
+     * Methode des Buttons, um zum Server zu connecten
+     */
     @FXML
     private void connect() {
         if (ClientMain.clientThread == null || !ClientMain.clientThread.isAlive()) {
@@ -50,12 +61,20 @@ public class ClientController {
             System.out.println("Client already connected");
     }
 
+    /**
+     * Methode des Buttons, um sich vom Server zu disconnecten
+     */
     @FXML
     private void disconnect() {
         PrintWriter out = ClientMain.client.getOutputStream();
         out.println("disconnect:");
     }
 
+    /**
+     * Methode des Buttons, um den Benutzername zu bestätigen und sich einzuloggen
+     *
+     * @throws IOException
+     */
     @FXML
     private void btnLogin() throws IOException {
         ClientMain.client.setName(textFieldLogin.getText());
@@ -64,6 +83,9 @@ public class ClientController {
         stage.close();
     }
 
+    /**
+     * Methode des Buttons, zum senden von Nachrichten
+     */
     @FXML
     private void sendMessage() {
         ClientMain.client.sendMessage(chatInput.getText());

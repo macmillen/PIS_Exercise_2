@@ -7,6 +7,9 @@ import java.net.*;
 import java.io.*;
 import java.util.Scanner;
 
+/**
+ * Diese Klasse verwaltet den Input, welcher von den Clients an den Server gesendet wird.
+ */
 public class ServerInput implements Runnable {
 
     private Socket client;
@@ -17,6 +20,9 @@ public class ServerInput implements Runnable {
         this.client = client;
     }
 
+    /**
+     * Diese Methode prüft jede Nachricht der Clients auf bestimmte Kommandos. Anschließend wird die, abhängig vom mit gesendeten Kommando, weiterverarbeitet.
+     */
     @Override
     public void run() {
         while (true) {
@@ -100,6 +106,11 @@ public class ServerInput implements Runnable {
         }
     }
 
+    /**
+     * Diese Methode aktualisiert die Liste der Client Namen
+     *
+     * @return
+     */
     private String updateNameList() {
         String output = "namelist";
 
